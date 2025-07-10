@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Application;
+using Application.Enums;
 using NUnit.Framework;
 
 
@@ -30,6 +31,7 @@ namespace ApplicationTests
         {
             var order = new Order
             {
+                MenuType = MenuType.Evening,
                 Dishes = new List<int>
                 {
                     1
