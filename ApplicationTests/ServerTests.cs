@@ -64,6 +64,41 @@ namespace ApplicationTests
             var actual = _sut.TakeOrder(order);
             Assert.AreEqual(expected, actual);
         }
+        [Test]
+        public void CanServeEgg()
+        {
+            var order = "morning,1";
+            string expected = "egg";
+            var actual = _sut.TakeOrder(order);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CanServe2Coffee()
+        {
+            var order = "morning,3,3";
+            string expected = "coffee(x2)";
+            var actual = _sut.TakeOrder(order);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CanServeEggToastCoffee()
+        {
+            var order = "morning,1,2,3";
+            string expected = "egg,toast,coffee";
+            var actual = _sut.TakeOrder(order);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CanServeEggToastCoffeex2()
+        {
+            var order = "morning,1,2,3,3";
+            string expected = "egg,toast,coffee(x2)";
+            var actual = _sut.TakeOrder(order);
+            Assert.AreEqual(expected, actual);
+        }
 
         [Test]
         public void CanGenerateErrorWithWrongDish()
