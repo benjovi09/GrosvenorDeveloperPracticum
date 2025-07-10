@@ -53,15 +53,13 @@ namespace Application
             return returnValue;
         }
 
-        private static MenuType ParseMenuType(string unparsedMenuType)
-        {
-            return unparsedMenuType.Trim().ToLower() switch
+        private static MenuType ParseMenuType(string unparsedMenuType) =>
+            unparsedMenuType.Trim().ToLower() switch
             {
                 "morning" => MenuType.Morning,
                 "evening" => MenuType.Evening,
                 _ => throw new ApplicationException($"MenuType {unparsedMenuType} does not exist")
             };
-        }
 
         private string FormatOutput(List<Dish> dishes)
         {

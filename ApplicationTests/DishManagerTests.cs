@@ -27,7 +27,7 @@ namespace ApplicationTests
         }
 
         [Test]
-        public void ListWith1ReturnsOneSteak()
+        public void EveningListWith1ReturnsOneSteak()
         {
             var order = new Order
             {
@@ -41,6 +41,23 @@ namespace ApplicationTests
             var actual = _sut.GetDishes(order);
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("steak", actual.First().DishName);
+            Assert.AreEqual(1, actual.First().Count);
+        }
+        [Test]
+        public void MorningListWith1ReturnsOneEgg()
+        {
+            var order = new Order
+            {
+                MenuType = MenuType.Morning,
+                Dishes = new List<int>
+                {
+                    1
+                }
+            };
+
+            var actual = _sut.GetDishes(order);
+            Assert.AreEqual(1, actual.Count);
+            Assert.AreEqual("egg", actual.First().DishName);
             Assert.AreEqual(1, actual.First().Count);
         }
     }

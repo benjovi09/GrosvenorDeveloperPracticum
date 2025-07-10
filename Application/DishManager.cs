@@ -52,33 +52,28 @@ namespace Application
             }
         }
 
-        private static string GetOrderName(MenuType menuType, int order)
-        {
-            switch (menuType)
+        private static string GetOrderName(MenuType menuType, int order) =>
+            (menuType) switch
             {
-                case MenuType.Morning:
-                    return order switch
+                MenuType.Morning =>
+                    order switch
                     {
                         1 => "egg",
                         2 => "toast",
                         3 => "coffee",
                         _ => throw new ApplicationException($"Order {order} does not exist"),
-                    };
-                case MenuType.Evening:
+                    },
+                MenuType.Evening =>
+                    order switch
                     {
-                        return order switch
-                        {
-                            1 => "steak",
-                            2 => "potato",
-                            3 => "wine",
-                            4 => "cake",
-                            _ => throw new ApplicationException($"Order {order} does not exist"),
-                        };
-                    }
-                default:
-                    throw new ApplicationException($"MenuType {menuType} does not exist");
-            }
-        }
+                        1 => "steak",
+                        2 => "potato",
+                        3 => "wine",
+                        4 => "cake",
+                        _ => throw new ApplicationException($"Order {order} does not exist"),
+                    },
+                _ => throw new ApplicationException($"MenuType {menuType} does not exist"),
+            };
 
 
         private static bool IsMultipleAllowed(MenuType menuType, int order) =>

@@ -101,9 +101,18 @@ namespace ApplicationTests
         }
 
         [Test]
+        public void CanParseCaseInsensitiveMenuType()
+        {
+            var order = "MORNIng,1,2";
+            string expected = "egg,toast";
+            var actual = _sut.TakeOrder(order);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void CanGenerateErrorWithWrongDish()
         {
-            var order = "1,2,3,5";
+            var order = "evening,1,2,3,5";
             string expected = "error";
             var actual = _sut.TakeOrder(order);
             Assert.AreEqual(expected, actual);
@@ -112,7 +121,7 @@ namespace ApplicationTests
         [Test]
         public void CanGenerateErrorWhenTryingToServerMoreThanOneSteak()
         {
-            var order = "1,1,2,3";
+            var order = "evening,1,1,2,3";
             string expected = "error";
             var actual = _sut.TakeOrder(order);
             Assert.AreEqual(expected, actual);
