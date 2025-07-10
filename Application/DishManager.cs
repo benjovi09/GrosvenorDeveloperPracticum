@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +18,7 @@ namespace Application
             order.Dishes.Sort();
             foreach (var dishType in order.Dishes)
             {
-                AddOrderToList(dishType, returnValue);
+                AddOrderToList(order.MenuType, dishType, returnValue);
             }
             return returnValue;
         }
@@ -30,9 +31,9 @@ namespace Application
         /// </summary>
         /// <param name="order">int, represents a dishtype</param>
         /// <param name="returnValue">a list of dishes, - get appended to or changed </param>
-        private void AddOrderToList(int order, List<Dish> returnValue)
+        private static void AddOrderToList(MenuType menuType, int order, List<Dish> returnValue)
         {
-            string orderName = GetOrderName(order);
+            string orderName = GetOrderName(menuType, order);
             var existingOrder = returnValue.SingleOrDefault(x => x.DishName == orderName);
             if (existingOrder == null)
             {
@@ -41,7 +42,7 @@ namespace Application
                     DishName = orderName,
                     Count = 1
                 });
-            } else if (IsMultipleAllowed(order))
+            } else if (IsMultipleAllowed(menuType, order))
             {
                 existingOrder.Count++;
             }
@@ -51,35 +52,49 @@ namespace Application
             }
         }
 
-        private string GetOrderName(int order)
+        private static string GetOrderName(MenuType menuType, int order)
         {
-            switch (order)
+            switch (menuType)
             {
-                case 1:
-                    return "steak";
-                case 2:
-                    return "potato";
-                case 3:
-                    return "wine";
-                case 4:
-                    return "cake";
+                case MenuType.Morning:
+                    return order switch
+                    {
+                        1 => "egg",
+                        2 => "toast",
+                        3 => "coffee",
+                        _ => throw new ApplicationException($"Order {order} does not exist"),
+                    };
+                case MenuType.Evening:
+                    {
+                        return order switch
+                        {
+                            1 => "steak",
+                            2 => "potato",
+                            3 => "wine",
+                            4 => "cake",
+                            _ => throw new ApplicationException($"Order {order} does not exist"),
+                        };
+                    }
                 default:
-                    throw new ApplicationException("Order does not exist");
-
+                    throw new ApplicationException($"MenuType {menuType} does not exist");
             }
         }
 
 
-        private bool IsMultipleAllowed(int order)
-        {
-            switch (order)
+        private static bool IsMultipleAllowed(MenuType menuType, int order) =>
+            menuType switch
             {
-                case 2:
-                    return true;
-                default:
-                    return false;
-
-            }
-        }
+                MenuType.Morning => order switch
+                {
+                    3 => true,
+                    _ => false,
+                },
+                MenuType.Evening => order switch
+                {
+                    2 => true,
+                    _ => false,
+                },
+                _ => false,
+            };
     }
 }

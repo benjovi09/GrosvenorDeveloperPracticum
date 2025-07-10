@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Application.Enums;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Application
 {
@@ -36,7 +38,8 @@ namespace Application
             };
 
             var orderItems = unparsedOrder.Split(',');
-            foreach (var orderItem in orderItems)
+            returnValue.MenuType = ParseMenuType(orderItems[0]);
+            foreach (var orderItem in orderItems.Skip(1).ToArray())
             {
                 if (int.TryParse(orderItem, out int parsedOrder))
                 {
@@ -48,6 +51,16 @@ namespace Application
                 }
             }
             return returnValue;
+        }
+
+        private static MenuType ParseMenuType(string unparsedMenuType)
+        {
+            return unparsedMenuType.Trim().ToLower() switch
+            {
+                "morning" => MenuType.Morning,
+                "evening" => MenuType.Evening,
+                _ => throw new ApplicationException($"MenuType {unparsedMenuType} does not exist")
+            };
         }
 
         private string FormatOutput(List<Dish> dishes)
